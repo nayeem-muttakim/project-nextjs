@@ -21,13 +21,13 @@ const Add = () => {
       description,
     };
     // console.log(product);
-    axios
-      .post("http://localhost:5500/products", product)
-      .then((res) => {
-        // console.log(res);
-        router.push("/");
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .post("http://localhost:5500/products", product)
+    //   .then((res) => {
+    //     // console.log(res);
+    //     router.push("/");
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -61,6 +61,18 @@ const Add = () => {
               <option>Electronics</option>
               <option>Food</option>
             </select>
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Images</span>
+            </label>
+            <input
+              type="file"
+              multiple
+              name="title"
+              className="input input-bordered"
+              required
+            />
           </div>
           <div className="form-control">
             <label className="label">
