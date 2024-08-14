@@ -1,17 +1,22 @@
-import Card from "@/components/ui/Card"
+import Card from "@/components/ui/Card";
 
-export const metadata = {
-  title: "Dynamic Fetching",
-};
+
+interface Products {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+}
+
 export const revalidate = 0;
 export default async function Home() {
   const response = await fetch("http://localhost:5500/products");
-  const products = await response.json();
-  // console.log(products);
+  const products: Products[] = await response.json();
+ 
   return (
-    <main className="max-w-7xl mx-auto my-16">
+    <main className="grid grid-cols-3 gap-2">
       {products.map((product) => (
-        <Card key={product.id} product={product}/>
+        <Card key={product.id} product={product} />
       ))}
     </main>
   );
