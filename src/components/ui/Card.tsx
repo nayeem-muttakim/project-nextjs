@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Delete from "../Delete";
+import Link from "next/link";
 interface ProductProps {
   product: {
     id: number;
@@ -9,7 +11,11 @@ interface ProductProps {
 }
 const Card = ({ product }: ProductProps) => {
   return (
-    <div className="card bg-base-100 w-96 shadow-xl">
+    <div className="card bg-base-100 mx-auto w-96 shadow-xl relative">
+      <Link href={`/update/${product.id}`} className="badge badge-accent absolute right-28 top-3">
+        Update
+      </Link>
+      <Delete id={product.id} />
       <figure className="px-10 pt-10">
         <div className="carousel rounded-box w-96">
           <div className="carousel-item w-1/2">
