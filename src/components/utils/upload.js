@@ -8,5 +8,5 @@ export const uploadImages = async (file) => {
     "https://api.cloudinary.com/v1_1/datu9x2hp/image/upload",
     formData
   );
-  return { url: data?.secure_url };
+  return { publicId: data?.public_id, url: data?.secure_url };
 };

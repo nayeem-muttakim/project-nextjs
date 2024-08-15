@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadImages } from "@/components/utils/upload";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,31 +11,43 @@ interface ProductData {
 }
 const Update = () => {
   const [data, setData] = useState<ProductData>();
+  const [imagesFile, setImagesFile] = useState([]);
   const { id } = useParams();
 
-  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const category = (form.elements.namedItem("category") as HTMLInputElement)
-      .value;
-    const description = (
-      form.elements.namedItem("description") as HTMLTextAreaElement
-    ).value;
+    try {
+      let ImagesArr = [];
+      for (let i = 0; i < imagesFile.length; i++) {
+        const data = await uploadImages(imagesFile[i]);
+        ImagesArr.push(data);
+      }
+      const form = e.target as HTMLFormElement;
+      const title = (form.elements.namedItem("title") as HTMLInputElement)
+        .value;
+      const category = (form.elements.namedItem("category") as HTMLInputElement)
+        .value;
 
-    const product = {
-      title,
-      category,
-      description,
-    };
+      const description = (
+        form.elements.namedItem("description") as HTMLTextAreaElement
+      ).value;
 
-    axios
-      .patch(`http://localhost:5500/products/${id}`, product)
-      .then((res) => {
-        // console.log(res);
-        location.reload();
-      })
-      .catch((err) => console.log(err));
+      const product = {
+        title,
+        category,
+        description,
+        images: ImagesArr,
+      };
+      axios
+        .patch(`http://localhost:5500/products/${id}`, product)
+        .then((res) => {
+          // console.log(res);
+          location.reload();
+        })
+        .catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     axios(`http://localhost:5500/products/${id}`).then((res) =>
@@ -73,6 +86,21 @@ const Update = () => {
               <option>Electronics</option>
               <option>Food</option>
             </select>
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Images</span>
+            </label>
+            <input
+              type="file"
+              multiple={true}
+              name="images"
+              className="input input-bordered"
+              required
+              onChange={(e) => {
+                setImagesFile(e.target.files);
+              }}
+            />
           </div>
           <div className="form-control">
             <label className="label">

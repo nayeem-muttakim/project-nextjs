@@ -1,33 +1,50 @@
 "use client";
 
 import axios from "axios";
+import { uploadImages } from "@/components/utils/upload";
 import { redirect, useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Add = () => {
   const router = useRouter();
-  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const category = (form.elements.namedItem("category") as HTMLInputElement)
-      .value;
-    const description = (
-      form.elements.namedItem("description") as HTMLTextAreaElement
-    ).value;
+  const [imagesFile, setImagesFile] = useState([]);
 
-    const product = {
-      title,
-      category,
-      description,
-    };
-    // console.log(product);
-    // axios
-    //   .post("http://localhost:5500/products", product)
-    //   .then((res) => {
-    //     // console.log(res);
-    //     router.push("/");
-    //   })
-    //   .catch((err) => console.log(err));
+
+  const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      let ImagesArr = [];
+      for (let i = 0; i < imagesFile.length; i++) {
+        const data = await uploadImages(imagesFile[i]);
+        ImagesArr.push(data);
+      }
+      const form = e.target as HTMLFormElement;
+      const title = (form.elements.namedItem("title") as HTMLInputElement)
+        .value;
+      const category = (form.elements.namedItem("category") as HTMLInputElement)
+        .value;
+
+      const description = (
+        form.elements.namedItem("description") as HTMLTextAreaElement
+      ).value;
+
+      const product = {
+        title,
+        category,
+        description,
+        images: ImagesArr,
+      };
+      axios
+        .post("http://localhost:5500/products", product)
+        .then((res) => {
+          // console.log(res);
+          router.push("/");
+        })
+        .catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -68,10 +85,13 @@ const Add = () => {
             </label>
             <input
               type="file"
-              multiple
-              name="title"
+              multiple={true}
+              name="images"
               className="input input-bordered"
               required
+              onChange={(e) => {
+                setImagesFile(e.target.files);
+              }}
             />
           </div>
           <div className="form-control">
