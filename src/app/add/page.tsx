@@ -49,7 +49,7 @@ const Add = () => {
 
   return (
     <div className="hero">
-      <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+      <div className="card bg-base-100 w-full max-w-lg shrink-0 shadow-2xl">
         <form className="card-body" onSubmit={handleAdd}>
           <div className="form-control">
             <label className="label">
@@ -70,7 +70,7 @@ const Add = () => {
             <select
               required
               name="category"
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered w-full"
             >
               <option disabled selected>
                 Select Category
@@ -101,7 +101,7 @@ const Add = () => {
             <textarea
               placeholder="The Latest S20 Series"
               name="description"
-              className="textarea textarea-bordered textarea-md w-full max-w-xs"
+              className="textarea textarea-bordered textarea-md w-full"
               required
             />
           </div>
