@@ -56,6 +56,17 @@ const Update = () => {
       console.log(err);
     }
   };
+
+  const handleDeleteImage = async (imageId: string) => {
+    axios.delete(`http://localhost:5500/products/${id}/image/${imageId}`).then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        alert("Image Removed");
+        location.reload();
+      }
+    });
+
+  };
   useEffect(() => {
     axios(`http://localhost:5500/products/${id}`).then((res) =>
       setData(res.data as ProductData)
@@ -116,7 +127,10 @@ const Update = () => {
                   src={image.url}
                   className="rounded-box"
                 />
-                <button className="btn btn-circle absolute opacity-50 right-3 top-3 group-hover:opacity-100 ease-in-out transition-all duration-600">
+                <button
+                  onClick={() => handleDeleteImage(image.publicId)}
+                  className="btn btn-circle absolute opacity-50 right-3 top-3 group-hover:opacity-100 ease-in-out transition-all duration-600"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
