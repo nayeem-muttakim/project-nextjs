@@ -114,11 +114,11 @@ const Update = () => {
               }}
             />
           </div>
-          <div className="carousel carousel-center mx-auto bg-base-300 rounded-box max-w-md space-x-4 p-4">
+          <div className=" mx-auto bg-base-300 grid md:grid-cols-2 rounded-box max-w-md space-x-4 p-4">
             {data?.images?.map((image) => (
               <div
                 key={image.publicId}
-                className="carousel-item w-fit relative group"
+                className="w-fit relative group"
               >
                 <Image
                   height={500}
@@ -135,8 +135,8 @@ const Update = () => {
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
                     y="0px"
-                    width="30"
-                    height="30"
+                    width="20"
+                    height="20"
                     viewBox="0,0,256,256"
                   >
                     <g

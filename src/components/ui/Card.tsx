@@ -12,7 +12,7 @@ interface ProductProps {
 }
 const Card = ({ product }: ProductProps) => {
   return (
-    <div className="card bg-base-100 mx-auto w-96 shadow-xl relative">
+    <div className="card bg-base-100 mx-auto  shadow-xl relative">
       <Link
         href={`/update/${product.id}`}
         className="badge badge-accent absolute right-28 top-3"
@@ -21,9 +21,9 @@ const Card = ({ product }: ProductProps) => {
       </Link>
       <Delete id={product.id} />
       <figure className="px-10 pt-10">
-        <div className="carousel rounded-box w-96">
+        <div className="rounded-box grid md:grid-cols-2 gap-1">
           {product?.images?.map((image) => (
-            <div key={image.publicId} className="carousel-item w-1/2">
+            <div key={image.publicId} className="  border-black border">
               <Image
                 height={500}
                 width={500}

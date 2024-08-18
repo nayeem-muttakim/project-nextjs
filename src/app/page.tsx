@@ -14,7 +14,7 @@ export default async function Home() {
   const products: Products[] = await response.json();
 
   return (
-    <main className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <main className="grid md:grid-cols-2 gap-2">
       {products.map((product) => (
         <Card key={product.id} product={product} />
       ))}
