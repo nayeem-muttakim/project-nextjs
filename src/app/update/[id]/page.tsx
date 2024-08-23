@@ -4,12 +4,16 @@ import { uploadImages } from "@/components/utils/upload";
 import axios from "axios";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+interface Image {
+  id: number;
+  url: string;
+}
 interface ProductData {
   title: string;
   category: string;
   description: string;
-  images: { publicId: string; url: string }[];
+  images: Image[];
 }
 const Update = () => {
   const [data, setData] = useState<ProductData>({
@@ -49,23 +53,34 @@ const Update = () => {
       axios
         .patch(`http://localhost:5500/products/${id}`, product)
         .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+          alert("Product updated successfully");
+        });
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleDeleteImage = async (imageId: string) => {
-    axios.delete(`http://localhost:5500/products/${id}/image/${imageId}`).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        alert("Image Removed");
-        location.reload();
+  const handleDeleteImage = async (
+    imageId: number,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault()
+    // e.stopPropagation();
+    try {
+      const response = await axios.delete(
+        `http://localhost:5500/products/${id}/image/${imageId}`
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setData((prevData) => ({
+          ...prevData,
+          images: prevData.images.filter((image) => image.id !== imageId),
+        }));
+        alert("Image removed successfully");
       }
-    });
-
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     axios(`http://localhost:5500/products/${id}`).then((res) =>
@@ -116,10 +131,7 @@ const Update = () => {
           </div>
           <div className=" mx-auto bg-base-300 grid md:grid-cols-2 rounded-box max-w-md space-x-4 p-4">
             {data?.images?.map((image) => (
-              <div
-                key={image.publicId}
-                className="w-fit relative group"
-              >
+              <div key={image.id} className="w-fit relative group">
                 <Image
                   height={500}
                   width={500}
@@ -128,7 +140,7 @@ const Update = () => {
                   className="rounded-box"
                 />
                 <button
-                  onClick={() => handleDeleteImage(image.publicId)}
+                  onClick={(e) => handleDeleteImage(image.id, e)}
                   className="btn btn-circle absolute opacity-50 right-3 top-3 group-hover:opacity-100 ease-in-out transition-all duration-600"
                 >
                   <svg

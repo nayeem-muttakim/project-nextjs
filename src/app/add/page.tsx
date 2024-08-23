@@ -7,17 +7,18 @@ import { useState } from "react";
 
 const Add = () => {
   const router = useRouter();
-  const [imagesFile, setImagesFile] = useState([]);
-
+  const [imagesFile, setImagesFile] = useState<FileList | null>(null);
 
   const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       let ImagesArr = [];
-      for (let i = 0; i < imagesFile.length; i++) {
-        const data = await uploadImages(imagesFile[i]);
-        ImagesArr.push(data);
+      if (imagesFile && imagesFile.length > 0) {
+        for (let i = 0; i < imagesFile.length; i++) {
+          const data = await uploadImages(imagesFile[i]);
+          ImagesArr.push(data);
+        }
       }
       const form = e.target as HTMLFormElement;
       const title = (form.elements.namedItem("title") as HTMLInputElement)
@@ -35,15 +36,10 @@ const Add = () => {
         description,
         images: ImagesArr,
       };
-      axios
-        .post("http://localhost:5500/products", product)
-        .then((res) => {
-          // console.log(res);
-          router.push("/");
-        })
-        .catch((err) => console.log(err));
+      axios.post("http://localhost:5500/products", product);
+      router.push("/");
     } catch (err) {
-      console.log(err);
+      console.error("Error adding", err);
     }
   };
 

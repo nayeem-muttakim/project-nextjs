@@ -1,15 +1,20 @@
 import Image from "next/image";
 import Delete from "../Delete";
 import Link from "next/link";
+interface Image {
+  id: number;
+  url: string;
+}
 interface ProductProps {
   product: {
     id: number;
     title: string;
     category: string;
     description: string;
-    images: { publicId: string; url: string }[];
+    images: Image[];
   };
 }
+
 const Card = ({ product }: ProductProps) => {
   return (
     <div className="card bg-base-100 mx-auto  shadow-xl relative">
@@ -23,7 +28,7 @@ const Card = ({ product }: ProductProps) => {
       <figure className="px-10 pt-10">
         <div className="rounded-box grid md:grid-cols-2 gap-1">
           {product?.images?.map((image) => (
-            <div key={image.publicId} className="  border-black border">
+            <div key={image.id} className="  border-black border">
               <Image
                 height={500}
                 width={500}
